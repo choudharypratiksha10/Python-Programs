@@ -1,24 +1,25 @@
-# Student Attendance Tracker
+# Student Attendance Tracker with Roll Numbers
 
-attendance = {}
+attendance = {}  # Dictionary to store student data with roll numbers
 
 def add_student():
-    name = input("Enter student name: ")
-    if name in attendance:
-        print("Student already exists!")
+    roll = input("Enter student roll number: ")
+    if roll in attendance:
+        print("Roll number already exists!")
     else:
-        attendance[name] = []
+        name = input("Enter student name: ")
+        attendance[roll] = {"name": name, "records": []}
         print("Student added successfully!")
 
 def mark_attendance():
-    name = input("Enter student name: ")
-    if name in attendance:
+    roll = input("Enter student roll number: ")
+    if roll in attendance:
         status = input("Enter status (P for Present / A for Absent): ").upper()
         if status == "P":
-            attendance[name].append("Present")
+            attendance[roll]["records"].append("Present")
             print("Marked Present")
         elif status == "A":
-            attendance[name].append("Absent")
+            attendance[roll]["records"].append("Absent")
             print("Marked Absent")
         else:
             print("Invalid input!")
@@ -27,26 +28,25 @@ def mark_attendance():
 
 def generate_report():
     print("\nAttendance Report")
-    print("-" * 78)
+    print("-" * 90)
     
     # Table Header
-    print(f"{'Name':<20}{'Total Classes':<15}{'Present':<10}{'Absent':<10}{'Percentage':<15}")
-    print("-" * 78)
+    print(f"{'Roll Number':<15}{'Name':<25}{'Total Classes':<15}{'Present':<10}{'Absent':<10}{'Percentage':<15}")
+    print("-" * 90)
 
-    for name, records in attendance.items():
+    for roll, info in attendance.items():
+        name = info["name"]
+        records = info["records"]
         total_classes = len(records)
         present_count = records.count("Present")
         absent_count = records.count("Absent")
 
-        if total_classes > 0:
-            percentage = (present_count / total_classes) * 100
-        else:
-            percentage = 0
+        percentage = (present_count / total_classes) * 100 if total_classes > 0 else 0
 
         # Table Row
-        print(f"{name:<20}{total_classes:<15}{present_count:<10}{absent_count:<10}{percentage:.2f}%")
+        print(f"{roll:<15}{name:<25}{total_classes:<15}{present_count:<10}{absent_count:<10}{percentage:.2f}%")
 
-    print("-" * 78)
+    print("-" * 90)
 
 def menu():
     while True:
